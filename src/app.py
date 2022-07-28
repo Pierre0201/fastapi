@@ -21,7 +21,7 @@ feats = [f for f in test_df.columns if f not in ['TARGET','SK_ID_CURR','SK_ID_BU
 def index():
     return {'message': 'Hello, stranger'}
 
-@app.post('/predict')
+@app.get('/predict')
 def predict():
     y = clf.predict_proba(test_df[feats].loc[test_df['SK_ID_CURR']==100141], num_iteration=clf.best_iteration_)[:,1]
     return {

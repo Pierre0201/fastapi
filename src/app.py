@@ -27,3 +27,10 @@ def predict():
     return {
         'prediction': y[0]
         }
+
+@app.post('/predict2')
+def predict():
+    y = clf.predict_proba(test_df[feats].loc[test_df['SK_ID_CURR']==100141], num_iteration=clf.best_iteration_)[:,1]
+    return {
+        'prediction': y[0]
+        }

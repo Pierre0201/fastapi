@@ -29,7 +29,7 @@ def predict():
         }
 
 @app.post('/predict2')
-def predict(value):
+def predict(value=credit):
     y = clf.predict_proba(test_df[feats].loc[test_df['SK_ID_CURR']==value], num_iteration=clf.best_iteration_)[:,1]
     return {
         'prediction': y[0]

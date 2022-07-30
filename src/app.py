@@ -34,3 +34,17 @@ def predict(value=credit):
     return {
         'prediction': y[0]
         }
+
+@app.get('/prediction/')
+def get_prediction(json_credit: dict = Body({})):
+    """
+    Calculates the probability of default for a credit application.  
+    Args:  
+    - credit data (json).  
+    Returns:  
+    - probability of default (dict).
+    """
+    df_one_credit = pd.Series(json_client).to_frame().transpose()
+    probability = clf.predict_proba(df_one_credit)[:, 1][0]
+    return {'probability': probability}
+

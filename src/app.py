@@ -45,6 +45,6 @@ def get_prediction(json_credit: dict = Body({})):
     - probability of default (dict).
     """
     df_one_credit = pd.Series(json_client).to_frame().transpose()
-    probability = clf.predict_proba(df_one_credit)[:, 1][0]
+    probability = clf.predict_proba(df_one_credit, num_iteration=clf.best_iteration_)[:, 1][0]
     return {'probability': probability}
 

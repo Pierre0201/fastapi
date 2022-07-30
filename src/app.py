@@ -29,7 +29,7 @@ def predict():
         }
 
 @app.get('/prediction/')
-def get_prediction(json_credit: dict = Body({})):
+def get_prediction(json_credit):
     """
     Calculates the probability of default for a credit application.  
     Args:  
@@ -37,13 +37,12 @@ def get_prediction(json_credit: dict = Body({})):
     Returns:  
     - probability of default (dict).
     """
-    df_one_credit = pd.Series(json_credit).to_frame().transpose()
+    df_one_credit = pd.read_json(json_credit, orient ='index').transpose()
     probability = clf.predict_proba(df_one_credit, num_iteration=clf.best_iteration_)[:, 1][0]
     return {'probability': probability}
 
-
 @app.post('/prediction/')
-def get_prediction(json_credit: dict = Body({})):
+def get_prediction(json_credit):
     """
     Calculates the probability of default for a credit application.  
     Args:  
@@ -51,6 +50,6 @@ def get_prediction(json_credit: dict = Body({})):
     Returns:  
     - probability of default (dict).
     """
-    df_one_credit = pd.Series(json_credit).to_frame().transpose()
+    df_one_credit = pd.read_json(json_credit, orient ='index').transpose()
     probability = clf.predict_proba(df_one_credit, num_iteration=clf.best_iteration_)[:, 1][0]
     return {'probability': probability}

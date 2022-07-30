@@ -42,7 +42,7 @@ def get_prediction(json_credit):
     probability = clf.predict_proba(df_one_credit, num_iteration=clf.best_iteration_)[:, 1][0]
     return {'probability': probability}
 
-@app.post('/prediction/')
+@app.post('/prediction2/')
 def get_prediction(json_credit):
     """
     Calculates the probability of default for a credit application.  

@@ -28,13 +28,6 @@ def predict():
         'prediction': y[0]
         }
 
-@app.post('/predict2')
-def predict(value=credit):
-    y = clf.predict_proba(test_df[feats].loc[test_df['SK_ID_CURR']==value], num_iteration=clf.best_iteration_)[:,1]
-    return {
-        'prediction': y[0]
-        }
-
 @app.get('/prediction/')
 def get_prediction(json_credit: dict = Body({})):
     """
@@ -44,7 +37,20 @@ def get_prediction(json_credit: dict = Body({})):
     Returns:  
     - probability of default (dict).
     """
-    df_one_credit = pd.Series(json_client).to_frame().transpose()
+    df_one_credit = pd.Series(json_credit).to_frame().transpose()
     probability = clf.predict_proba(df_one_credit, num_iteration=clf.best_iteration_)[:, 1][0]
     return {'probability': probability}
 
+
+@app.post('/prediction/')
+def get_prediction(json_credit: dict = Body({})):
+    """
+    Calculates the probability of default for a credit application.  
+    Args:  
+    - credit data (json).  
+    Returns:  
+    - probability of default (dict).
+    """
+    df_one_credit = pd.Series(json_credit).to_frame().transpose()
+    probability = clf.predict_proba(df_one_credit, num_iteration=clf.best_iteration_)[:, 1][0]
+    return {'probability': probability}

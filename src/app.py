@@ -30,7 +30,7 @@ def predict():
         }
 
 @app.get('/prediction/')
-def get_prediction(json_credit):
+def get_prediction(json_credit: dict = Body({})):
     """
     Calculates the probability of default for a credit application.  
     Args:  
@@ -43,7 +43,7 @@ def get_prediction(json_credit):
     return probability
 
 @app.post('/prediction2/')
-def get_prediction(json_credit):
+def get_prediction2(json_credit: dict = Body({})):
     """
     Calculates the probability of default for a credit application.  
     Args:  

@@ -40,7 +40,7 @@ def get_prediction(json_credit):
     """
     df_one_credit = pd.read_json(json_credit, orient ='index').transpose()
     probability = clf.predict_proba(df_one_credit, num_iteration=clf.best_iteration_)[:, 1][0]
-    return {'probability': probability}
+    return probability
 
 @app.post('/prediction2/')
 def get_prediction(json_credit):
@@ -53,4 +53,4 @@ def get_prediction(json_credit):
     """
     df_one_credit = pd.read_json(json_credit, orient ='index').transpose()
     probability = clf.predict_proba(df_one_credit, num_iteration=clf.best_iteration_)[:, 1][0]
-    return {'probability': probability}
+    return probability

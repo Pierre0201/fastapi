@@ -24,9 +24,9 @@ def index():
 
 @app.get('/predict')
 def predict(id_credit: int):
-    y = clf.predict_proba(test_df[feats].loc[test_df['SK_ID_CURR']==id_credit], num_iteration=clf.best_iteration_)[:,1]
+    probability = clf.predict_proba(test_df[feats].loc[test_df['SK_ID_CURR']==id_credit], num_iteration=clf.best_iteration_)[:,1][0]
     return {
-        'prediction': y[0]
+        'probability': probability
         }
 
 @app.get('/prediction/')

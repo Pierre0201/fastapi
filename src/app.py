@@ -23,8 +23,8 @@ def index():
     return {'message': 'Hello, stranger'}
 
 @app.get('/predict')
-def predict():
-    y = clf.predict_proba(test_df[feats].loc[test_df['SK_ID_CURR']==100141], num_iteration=clf.best_iteration_)[:,1]
+def predict(id_credit: int):
+    y = clf.predict_proba(test_df[feats].loc[test_df['SK_ID_CURR']==id_credit], num_iteration=clf.best_iteration_)[:,1]
     return {
         'prediction': y[0]
         }

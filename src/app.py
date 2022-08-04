@@ -4,7 +4,7 @@ import pandas as pd
 from joblib import load
 from io import BytesIO
 import requests
-#import json
+import numpy as np
 
 mLink = 'https://github.com/Pierre0201/fastapi/blob/main/src/ressource/clf.joblib?raw=true'
 mfile = BytesIO(requests.get(mLink).content)

@@ -25,9 +25,22 @@ def index():
 @app.get('/predict')
 def predict(id_credit: int):
     probability = clf.predict_proba(test_df[feats].loc[test_df['SK_ID_CURR']==id_credit], num_iteration=clf.best_iteration_)[:,1][0]
-    return {
-        'probability': probability
-        }
+    return {'probability': probability}
+
+@app.get('/minimum/')
+def minimum():
+    minimum = min(test_df['TARGET'])
+    return {'min': minimum}
+
+@app.get('/maximum/')
+def maximum():
+    maximum = max(test_df['TARGET'])
+    return {'max': maximum}
+
+@app.get('/median/')
+def median():
+    med = np.median(test_df['TARGET'])
+    return {'median': med}
 
 @app.get('/prediction/')
 def get_prediction(json_credit: dict = Body({})):

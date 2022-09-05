@@ -6,7 +6,7 @@ from io import BytesIO
 import requests
 import numpy as np
 
-mLink = 'https://github.com/Pierre0201/fastapi/blob/main/src/ressource/clf.joblib?raw=true'
+mLink = 'https://github.com/Pierre0201/fastapi/blob/main/src/ressource/clf_v2.joblib?raw=true'
 mfile = BytesIO(requests.get(mLink).content)
 clf = load(mfile)
 
@@ -14,7 +14,7 @@ clf = load(mfile)
 app = FastAPI()
 
 path = 'https://raw.githubusercontent.com/Pierre0201/fastapi/main/src/ressource/'
-test_df = pd.read_csv(path+'submission_kernel02.csv')
+test_df = pd.read_csv(path+'submission_kernel02_v2.csv')
 feats = [f for f in test_df.columns if f not in ['TARGET','SK_ID_CURR','SK_ID_BUREAU','SK_ID_PREV','index']]
 
 # 3. Index route, opens automatically on http://127.0.0.1:8000
@@ -42,28 +42,42 @@ def median():
     med = np.median(test_df['TARGET'])
     return {'median': med}
 
-@app.get('/prediction/')
-def get_prediction(json_credit: dict = Body({})):
+@app.post('/prediction/')
+def get_prediction(credit_data: dict = Body({})):
     """
     Calculates the probability of default for a credit application.  
     Args:  
-    - credit data (json).  
+    - credit data (dict).  
     Returns:  
     - probability of default (dict).
     """
-    df_one_credit = pd.read_json(json_credit, orient ='index').transpose()
+   
+    df_one_credit = pd.DataFrame.from_dict(credit_data, orient ='index').transpose()[feats]
     probability = clf.predict_proba(df_one_credit, num_iteration=clf.best_iteration_)[:, 1][0]
-    return probability
+    return {'probability': probability}
 
-@app.post('/prediction2/')
-def get_prediction2(json_credit: dict = Body({})):
-    """
-    Calculates the probability of default for a credit application.  
-    Args:  
-    - credit data (json).  
-    Returns:  
-    - probability of default (dict).
-    """
-    df_one_credit = pd.read_json(json_credit, orient ='index').transpose()
-    probability = clf.predict_proba(df_one_credit, num_iteration=clf.best_iteration_)[:, 1][0]
-    return probability
+#@app.get('/prediction/')
+#def get_prediction(json_credit: dict = Body({})):
+#    """
+#    Calculates the probability of default for a credit application.  
+#    Args:  
+#    - credit data (json).  
+#    Returns:  
+#    - probability of default (dict).
+#    """
+#    df_one_credit = pd.read_json(json_credit, orient ='index').transpose()
+#    probability = clf.predict_proba(df_one_credit, num_iteration=clf.best_iteration_)[:, 1][0]
+#    return probability
+
+#@app.post('/prediction2/')
+#def get_prediction2(json_credit: dict = Body({})):
+#    """
+#    Calculates the probability of default for a credit application.  
+#    Args:  
+#    - credit data (json).  
+#    Returns:  
+#    - probability of default (dict).
+#    """
+#    df_one_credit = pd.read_json(json_credit, orient ='index').transpose()
+#    probability = clf.predict_proba(df_one_credit, num_iteration=clf.best_iteration_)[:, 1][0]
+#    return probability

@@ -6,7 +6,7 @@ from io import BytesIO
 import requests
 import numpy as np
 
-mLink = 'https://github.com/Pierre0201/fastapi/blob/main/src/ressource/clf_v2.joblib?raw=true'
+mLink = 'https://github.com/Pierre0201/fastapi/blob/main/src/ressource/clf.joblib?raw=true'
 mfile = BytesIO(requests.get(mLink).content)
 clf = load(mfile)
 
@@ -14,7 +14,7 @@ clf = load(mfile)
 app = FastAPI()
 
 path = 'https://raw.githubusercontent.com/Pierre0201/fastapi/main/src/ressource/'
-test_df = pd.read_csv(path+'submission_kernel02_v2.csv')
+test_df = pd.read_csv(path+'submission_kernel02.csv')
 feats = [f for f in test_df.columns if f not in ['TARGET','SK_ID_CURR','SK_ID_BUREAU','SK_ID_PREV','index']]
 
 # 3. Index route, opens automatically on http://127.0.0.1:8000
